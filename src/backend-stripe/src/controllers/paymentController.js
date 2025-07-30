@@ -1,21 +1,48 @@
 import stripe from '../services/stripeService.js';
 import database from '../services/supabaseService.js';
 
-// Create a payment intent
-export const createPaymentIntent = async (req, res) => {
+// Create payment intent from cart
+export const createPaymentIntentFromCart = async (req, res) => {
   try {
-    const { amount, currency, userId, gameIds } = req.body;
+    const { cartId, userId } = req.body;
     
-    // Validate input
-    if (!amount || !currency || !userId || !gameIds) {
-      return res.status(400).json({ error: 'Missing required fields' });
+    if (!cartId || !userId) {
+      return res.status(400).json({ error: 'Cart ID and User ID are required' });
     }
+
+    // Get cart items with prices
+    const { data: items, error: itemsError } = await database
+      .from('cart_items')
+      .select(`
+        quantity,
+        games (
+          game_id,
+          title,
+          price
+        )
+      `)
+      .eq('cart_id', cartId);
+
+    if (itemsError) throw itemsError;
+
+    if (!items || items.length === 0) {
+      return res.status(400).json({ error: 'Cart is empty' });
+    }
+
+    // Calculate total amount
+    const amount = items.reduce((sum, item) => {
+      return sum + (item.quantity * item.games.price);
+    }, 0);
 
     // Create payment intent with Stripe
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100), // Stripe uses cents
-      currency: currency.toLowerCase(),
-      metadata: { userId, gameIds: JSON.stringify(gameIds) }
+      currency: 'usd',
+      metadata: { 
+        userId,
+        cartId,
+        gameIds: JSON.stringify(items.map(item => item.games.game_id))
+      }
     });
 
     // Store payment in Supabase
@@ -23,11 +50,12 @@ export const createPaymentIntent = async (req, res) => {
       .from('payments')
       .insert([{
         user_id: userId,
+        cart_id: cartId,
         amount: amount,
-        currency: currency,
+        currency: 'usd',
         status: 'pending',
         stripe_payment_id: paymentIntent.id,
-        description: `Payment for ${gameIds.length} games`
+        description: `Payment for ${items.length} games`
       }])
       .select();
 
@@ -42,6 +70,7 @@ export const createPaymentIntent = async (req, res) => {
       .insert([{
         user_id: userId,
         payment_id: paymentData[0].payment_id,
+        cart_id: cartId,
         total_amount: amount,
         status: 'created'
       }])
@@ -52,36 +81,11 @@ export const createPaymentIntent = async (req, res) => {
       return res.status(500).json({ error: 'Failed to create order' });
     }
 
-    // Get game prices and create order items
-    const { data: gamesData, error: gamesError } = await database
-      .from('games')
-      .select('game_id, price')
-      .in('game_id', gameIds);
-
-    if (gamesError) {
-      console.error('Error fetching games:', gamesError);
-      return res.status(500).json({ error: 'Failed to fetch game details' });
-    }
-
-    const orderItems = gamesData.map(game => ({
-      order_id: orderData[0].order_id,
-      game_id: game.game_id,
-      price_at_purchase: game.price
-    }));
-
-    const { error: itemsError } = await database
-      .from('order_items')
-      .insert(orderItems);
-
-    if (itemsError) {
-      console.error('Error creating order items:', itemsError);
-      return res.status(500).json({ error: 'Failed to create order items' });
-    }
-
     return res.json({
       clientSecret: paymentIntent.client_secret,
       paymentId: paymentData[0].payment_id,
-      orderId: orderData[0].order_id
+      orderId: orderData[0].order_id,
+      amount
     });
 
   } catch (error) {
@@ -90,7 +94,7 @@ export const createPaymentIntent = async (req, res) => {
   }
 };
 
-// Handle Stripe webhook for payment confirmation
+// Handle Stripe webhook (unchanged from previous implementation)
 export const handleStripeWebhook = async (req, res) => {
   const sig = req.headers['stripe-signature'];
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -138,7 +142,7 @@ const handleSuccessfulPayment = async (paymentIntent) => {
     // Get the payment record to find the associated order
     const { data: paymentData, error: getPaymentError } = await database
       .from('payments')
-      .select('payment_id')
+      .select('payment_id, cart_id')
       .eq('stripe_payment_id', paymentIntent.id)
       .single();
 
@@ -155,6 +159,14 @@ const handleSuccessfulPayment = async (paymentIntent) => {
 
     if (orderError) throw orderError;
 
+    // Clear the cart after successful payment
+    const { error: clearCartError } = await database
+      .from('cart_items')
+      .delete()
+      .eq('cart_id', paymentData.cart_id);
+
+    if (clearCartError) throw clearCartError;
+
     console.log(`Successfully processed payment ${paymentIntent.id}`);
 
   } catch (error) {
@@ -162,7 +174,7 @@ const handleSuccessfulPayment = async (paymentIntent) => {
   }
 };
 
-// Helper function to handle failed payments
+// Helper function to handle failed payments (unchanged)
 const handleFailedPayment = async (paymentIntent) => {
   try {
     const { error } = await database
@@ -205,7 +217,7 @@ export const getPaymentHistory = async (req, res) => {
   }
 };
 
-// Get order details
+// Get order details with cart items
 export const getOrderDetails = async (req, res) => {
   try {
     const { orderId } = req.params;
@@ -221,6 +233,10 @@ export const getOrderDetails = async (req, res) => {
           status as payment_status,
           stripe_payment_id,
           created_at as payment_date
+        ),
+        carts (
+          cart_id,
+          created_at as cart_created
         )
       `)
       .eq('order_id', orderId)
@@ -228,24 +244,28 @@ export const getOrderDetails = async (req, res) => {
 
     if (orderError) throw orderError;
 
-    // Get order items with game details
+    // Get cart items with game details
     const { data: itemsData, error: itemsError } = await database
-      .from('order_items')
+      .from('cart_items')
       .select(`
-        *,
+        quantity,
         games (
           game_id,
           title,
+          price,
           thumbnail_url
         )
       `)
-      .eq('order_id', orderId);
+      .eq('cart_id', orderData.carts.cart_id);
 
     if (itemsError) throw itemsError;
 
     return res.json({
       ...orderData,
-      items: itemsData
+      items: itemsData.map(item => ({
+        quantity: item.quantity,
+        ...item.games
+      }))
     });
 
   } catch (error) {

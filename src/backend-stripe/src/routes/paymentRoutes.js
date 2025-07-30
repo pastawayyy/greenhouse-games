@@ -1,6 +1,7 @@
 import express from 'express';
+
 import {
-  createPaymentIntent,
+  createPaymentIntentFromCart,
   handleStripeWebhook,
   getPaymentHistory,
   getOrderDetails
@@ -8,10 +9,10 @@ import {
 
 const router = express.Router();
 
-// Create a payment intent
-router.post('/create-payment-intent', createPaymentIntent);
+// Create payment intent from cart
+router.post('/create-from-cart', createPaymentIntentFromCart);
 
-// Stripe webhook handler (needs raw body)
+// Stripe webhook handler
 router.post('/webhook', express.raw({ type: 'application/json' }), handleStripeWebhook);
 
 // Get payment history for a user
