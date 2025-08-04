@@ -31,7 +31,7 @@ const BoostCard = () => {
               LEARNING OUTCOMES
             </Text>
             <Button
-              colorScheme="gray"
+              color="white"
               bg="#4C5B78"
               borderRadius="md"
               px={6}
