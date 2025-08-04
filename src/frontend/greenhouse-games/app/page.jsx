@@ -1,14 +1,21 @@
 'use client'
 
-import { ChakraProvider } from "@chakra-ui/react";
 import BoostCard from "./components/boostCard";
 import Carousel from "./components/carousel";
+import { popularGames, amazingDeals } from "./data";
 
 export default function Home() {
   return (
     <div>
-      <Carousel/>
+      <Carousel 
+        title="Explore popular games" 
+        items={popularGames} 
+      />
       <BoostCard/>
+      <Carousel 
+        title="Explore these amazing deals" 
+        items={amazingDeals} 
+      />
     </div>
   );
 }

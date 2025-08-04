@@ -7,52 +7,13 @@ import {
     Flex,
     Avatar,
     Icon,
+    IconButton
 } from "@chakra-ui/react";
+
 import { FaStar, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { IconButton } from "@chakra-ui/react";
 import { useRef } from "react";
 
-
-const cardData = [
-    {
-        title: "Reduce food waste",
-        organiser: "Jalan Journey",
-        imageUrl: "https://picsum.photos/200/200",
-        organiserPic: "",
-        rating: 4.6,
-        reviews: 78,
-        price: "$5.00"
-    },
-    {
-        title: "Reduce food waste",
-        organiser: "Jalan Journey",
-        imageUrl: "https://picsum.photos/200/200",
-        organiserPic: "",
-        rating: 4.6,
-        reviews: 78,
-        price: "$5.00"
-    },
-    {
-        title: "Reduce food waste",
-        organiser: "Jalan Journey",
-        imageUrl: "https://picsum.photos/200/200",
-        organiserPic: "",
-        rating: 4.6,
-        reviews: 78,
-        price: "$5.00"
-    },
-    {
-        title: "Reduce food waste",
-        organiser: "Jalan Journey",
-        imageUrl: "https://picsum.photos/200/200",
-        organiserPic: "",
-        rating: 4.6,
-        reviews: 78,
-        price: "$5.00"
-    }
-];
-
-const Carousel = () => {
+const Carousel = ({ title = "Explore popular games", items }) => {
     const scrollRef = useRef(null);
 
     const scroll = (direction) => {
@@ -68,8 +29,7 @@ const Carousel = () => {
     return (
         <Box overflowX="auto" py={4} bg="#F9FCEA">
             <Flex justify="space-between" align="center" p="4" pt="1">
-                <Text fontWeight="bold" color="green.800">Explore popular games</Text>
-                {/* idk how to fix the arrows xD  */}
+                <Text fontWeight="bold" color="green.800">{title}</Text>
                 <Flex gap={2}>
                     <IconButton
                         aria-label="Scroll left"
@@ -87,12 +47,11 @@ const Carousel = () => {
                         size="sm"
                         colorScheme="green"
                     />
-
                 </Flex>
             </Flex>
 
-            <Flex gap={6} px={4} width="max-content">
-                {cardData.map((item, index) => (
+            <Flex gap={6} px={4} width="max-content" ref={scrollRef}>
+                {items.map((item, index) => (
                     <Box
                         key={index}
                         minW="200px"
@@ -107,8 +66,7 @@ const Carousel = () => {
                         borderWidth="2px"
                         borderColor="gray.700/20"
                     >
-                        <Box
-                            textAlign="center" p={4}>
+                        <Box textAlign="center" p={4}>
                             <Image
                                 src={item.imageUrl}
                                 alt={item.title}
@@ -141,8 +99,6 @@ const Carousel = () => {
                                         </Text>
                                     </Box>
                                 </Flex>
-
-                                {/* Rating */}
                                 <Flex align="center" gap={1}>
                                     <Text fontSize="12px" fontWeight="bold" textAlign="right" color="black">
                                         {item.rating}
