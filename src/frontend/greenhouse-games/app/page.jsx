@@ -12,7 +12,9 @@ export default function Home() {
         title="Explore popular games" 
         items={popularGames} 
       />
-      <BoostCard/>
+      <div className="flex justify-center items-center bg-[#F9FCEA]">
+        <BoostCard/>
+      </div>
       <Carousel 
         title="Explore these amazing deals" 
         items={amazingDeals} 
