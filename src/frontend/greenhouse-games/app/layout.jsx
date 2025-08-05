@@ -1,5 +1,6 @@
 import Navbar from "./components/shared/navBar";
 import Provider from "./components/ui/provider";
+import Footer from "./components/shared/footer";
 import "./globals.css";
 
 export const metadata = {
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
             <Navbar />
           </div>
           {children}
+          <Footer />
         </Provider>
       </body>
     </html>

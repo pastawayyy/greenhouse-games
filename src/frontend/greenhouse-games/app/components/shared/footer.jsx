@@ -2,41 +2,20 @@
 import { Box, Flex, Text, Button, Icon, IconButton, VStack, HStack, Image } from "@chakra-ui/react";
 import { SiLinkedin, SiInstagram, SiFacebook } from 'react-icons/si';
 import { FaLinkedinIn, FaInstagram, FaFacebook } from "react-icons/fa";
+import JoinUs from "../joinUs";
+
 
 const Footer = () => {
     return (
+        
         <Box
             w="full"
             color="white"
-            bg="linear-gradient(to top, #284A27 62%, #6E6554 38%)"
-            minH={{ base: "auto", md: "540px" }} // Changed from fixed height to min-height
-        >
-            {/* Top section */}
-            <Flex
-                direction="column"
-                align="center"
-                justify="center"
-                gap={2}
-                p={{ base: 4, md: 6 }} // Added responsive padding
-                textAlign="center"
-            >
-                <Text fontSize={{ base: "2xl", md: "4xl" }} fontWeight="510" pt={{ base: 4, md: 6 }}>
-                    Join the Greenhouse Games Community
-                </Text>
-                <Text fontSize="sm" maxW="600px" px={4}>
-                    Discover engaging digital games to inspire learning and spark creativity. Perfect for educators, parents and developers!
-                </Text>
-                <Button
-                    size="md"
-                    bg="#284A27"
-                    color="white"
-                    _hover={{ bg: "#346133" }}
-                    mt={2}
-                >
-                    Sign up
-                </Button>
-            </Flex>
+            bg="#284A27"
+            minH={{ base: "auto", md: "340px" }}
 
+        >
+            
             {/* Links section */}
             <Flex
                 direction={{ base: "column", md: "row" }}
@@ -44,7 +23,7 @@ const Footer = () => {
                 justify="space-between"
                 p={{ base: 4, md: 8 }}
                 mx="auto"
-                mt={4}
+                mt={0}
                 gap={{ base: 6, md: 8 }}
                 flexWrap="wrap" // Allows columns to wrap on small screens
             >
@@ -119,7 +98,7 @@ const Footer = () => {
             </Flex>
 
             {/* Copyright */}
-            <Box p={4} bg="#284A27">
+            <Box p={2} bg="#284A27">
                 <Text textAlign="center" fontSize="xs">© 2024 All Rights Reserved. Greenhouse Games</Text>
             </Box>
         </Box>
