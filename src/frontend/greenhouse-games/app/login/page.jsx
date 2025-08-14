@@ -80,13 +80,13 @@ const Login = () => {
                         </List.Item>
                     </List.Root>
                     <Flex justify="center" width="full">
-                        <Button
+                        <Button asChild
                             colorPalette="teal"
                             m="3"
                             rounded="xl"
                             width="60%"
                         >
-                            Register
+                            <a href="./signup">Register</a>
                         </Button>
                     </Flex>
                     <Text color="grey" fontSize="sm">
