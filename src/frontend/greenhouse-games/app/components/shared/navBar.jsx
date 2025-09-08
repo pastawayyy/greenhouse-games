@@ -1,30 +1,68 @@
 'use client'
-import { Image, Box, Flex, Input, Button, Text, HStack, IconButton } from "@chakra-ui/react";
-import { FiSearch, FiShoppingCart } from "react-icons/fi";
-import ScrollableCategories from "./scrollableCategories";
 
-const Navbar = () => {
+import React from 'react';
+import {
+  Image,
+  Box,
+  Flex,
+  Input,
+  Button,
+  HStack,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem
+} from '@chakra-ui/react';
+import { FiSearch, FiShoppingCart, FiChevronDown } from "react-icons/fi";
+
+function Navbar() {
+  const categories = [
+    'Math Games', 
+    'Coding Games', 
+    'Language Games', 
+    'Memorization Games', 
+    'Science Games', 
+    'Art Games', 
+    'SEL Games'
+  ];
+
   return (
     <Box as="nav" w="full" borderBottom="1px" borderColor="gray.200" bg="#D8DFCD">
-      {/* Top Section - Logo, Search, Auth, Cart */}
-      <Flex 
-        justify="space-evenly" 
-        align="center" 
-        px={6} 
-        maxW="container.xl" 
-        mx="auto"
-      >
-        {/* Company Logo - Left aligned */}
+      {/* Top Section */}
+      <Flex justify="space-evenly" align="center" px={6} maxW="container.xl" mx="auto">
+        {/* Logo */}
         <Box flex="1">
-          <Image 
-            src="/GHG_icons/GHG-icon.png"
-            alt="EduGames Logo"
-            h="6vw"
-            w="auto"
-          />
+          <Image src="/GHG_icons/GHG-icon.png" alt="EduGames Logo" h="6vw" w="auto" />
         </Box>
 
-        {/* Center-aligned Search Bar */}
+        {/* Logo and Categories Dropdown */}
+        <Flex flex="1" align="center" gap={4}>
+          {/* Categories Dropdown */}
+          <Menu>
+            <MenuButton 
+              as={Button} 
+              leftIcon={<FiChevronDown />}
+              variant="ghost"
+              size="sm"
+              color="black"
+              _hover={{ bg: 'gray.200' }}
+              _active={{ bg: 'gray.300' }}
+            >
+              Categories
+            </MenuButton>
+            <MenuList>
+              {categories.map((category) => (
+                <MenuItem key={category}>{category}</MenuItem>
+              ))}
+            </MenuList>
+          </Menu>
+          
+          {/* Logo */}
+          <Image src="/GHG_icons/GHG-icon.png" alt="EduGames Logo" h="6vw" w="auto" />
+        </Flex>
+
+        {/* Search */}
         <Box flex="2" px={4} position="relative">
           <Input 
             placeholder="Search games..." 
@@ -48,87 +86,47 @@ const Navbar = () => {
             size="xs"
             fontSize="16px"
             _hover={{ bg: "#2d5a65" }}
-          >
-            <FiSearch />
-          </IconButton>
+            icon={<FiSearch />}
+          />
         </Box>
 
-        {/* Auth Buttons and Cart */}
+        {/* Auth + Cart */}
         <Flex flex="1" justify="flex-end" align="center" gap={2}>
-          <Button 
-            variant="ghost" 
-            colorScheme="gray" 
-            size="sm"
-            color="#1b4a26"
-            _hover={{ bg: 'gray.200' }}
-          >
+          <Button variant="ghost" size="sm" color="#1b4a26" _hover={{ bg: "gray.200" }}>
             Log In
           </Button>
-          <Button 
-            variant="ghost" 
-            colorScheme="green" 
-            size="sm"
-            color="#1b4a26" 
-            _hover={{ bg: 'gray.200' }}
-          >
+          <Button variant="ghost" size="sm" color="#1b4a26" _hover={{ bg: "gray.200" }}>
             Sign Up
           </Button>
-          {/* Cart Icon */}
           <IconButton
             aria-label="Shopping Cart"
             variant="ghost"
-            colorScheme="gray"
-            color="#1b4a26"
             size="md"
             fontSize="16px"
             isRound
-            _hover={{ bg: 'green.200' }}
-          >
-            <FiShoppingCart />
-          </IconButton>
+            color="#1b4a26"
+            _hover={{ bg: "green.200" }}
+            icon={<FiShoppingCart />}
+          />
         </Flex>
       </Flex>
 
-      {/* Bottom Section */}
-      <Box 
-        w="full" 
-        overflowX="auto" 
-        py={1} 
-        px={6}
-        bg="#D8DFCD"
-        css={{
-          '&::-webkit-scrollbar': {
-            height: '4px',
-          },
-          '&::-webkit-scrollbar-track': {
-            background: 'transparent',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            background: 'gray.300',
-            borderRadius: '2px',
-          },
-        }}
-      >
-        <HStack spacing={4} minW="max-content" justify="center">
-          {['Math Games', 'Coding Games', 'Language Games', 'Memorization Games', 'Science Games', 'Art Games', 'SEL Games'].map((category) => (
-            <Button 
-              key={category}
-              variant="ghost"
-              colorScheme="gray"
-              size="sm"
-              px={4}
-              borderRadius="full"
-              _hover={{ bg: 'gray.200' }}
-              _active={{ bg: 'gray.300' }}
-              color="black"
-            >
-              {category}
-            </Button>
-          ))}
+      {/* Bottom Section (simple links) */}
+      <Box w="full" py={1} px={6} bg="#D8DFCD">
+        <HStack spacing={4} justify="center">
+          <Button variant="ghost" size="sm" px={4} _hover={{ bg: "gray.200" }} color="black">
+            List Your Game
+          </Button>
+          <Button variant="ghost" size="sm" px={4} _hover={{ bg: "gray.200" }} color="black">
+            Learn More
+          </Button>
+          <Button variant="ghost" size="sm" px={4} _hover={{ bg: "gray.200" }} color="black">
+            Help Center
+          </Button>
         </HStack>
       </Box>
     </Box>
   );
-};
+}
 
 export default Navbar;
