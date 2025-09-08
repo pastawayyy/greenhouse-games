@@ -1,7 +1,6 @@
 'use client'
 
 import { Box, VStack, Field, Input, Text, FieldRequiredIndicator, Checkbox, Button, HStack, Separator, List, Flex } from "@chakra-ui/react";
-import { PasswordInput } from "../components/ui/password-input"
 
 const Login = () => {
     return (
@@ -18,7 +17,7 @@ const Login = () => {
                     <Text
                         color="grey"
                         fontWeight="bold"
-                        fontSize="large"
+                        fontSize="lg"
                     >
                         Log In
                     </Text>
@@ -76,7 +75,7 @@ const Login = () => {
                             Save your information for faster checkouts.
                         </List.Item>
                         <List.Item>
-                            Enjoy exclusive access to FREE games available only for members.
+                        Enjoy exclusive access to{' '} <Text as="span" fontWeight="bold">FREE</Text> games available only for members.
                         </List.Item>
                     </List.Root>
                     <Flex justify="center" width="full">
