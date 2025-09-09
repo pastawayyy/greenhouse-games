@@ -13,7 +13,7 @@ export default function RootLayout({ children }) {
     <html suppressHydrationWarning lang="en">
       <body>
         <Provider>
-          <div className="sticky top-0 z-50">
+          <div className="sticky z-50">
             <Navbar />
           </div>
           {children}

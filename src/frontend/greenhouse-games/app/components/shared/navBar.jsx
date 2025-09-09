@@ -1,17 +1,25 @@
 'use client'
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Image,
   Box,
   Flex,
   Input,
   Button,
-  HStack,
   IconButton,
   Menu,
+  Drawer,
+  Portal,
+  VStack,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  useBreakpointValue,
 } from '@chakra-ui/react';
-import { FiSearch, FiShoppingCart, FiChevronDown } from "react-icons/fi";
+import { LuSearch, LuShoppingCart, LuChevronDown, LuMenu, LuX, LuUser } from "react-icons/lu";
+import { motion, AnimatePresence } from 'motion/react';
 
 function Navbar() {
   const categories = [
@@ -24,108 +32,371 @@ function Navbar() {
     'SEL Games'
   ];
 
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      setIsScrolled(scrollTop > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <Box as="nav" w="full" borderBottom="1px" borderColor="gray.200" bg="#D8DFCD">
-      {/* Top Section */}
-      <Flex justify="space-evenly" align="center" px={6} maxW="container.xl" mx="auto">
-        {/* Logo */}
-        <Box flex="1">
-          <Image src="/GHG_icons/GHG-icon.png" alt="EduGames Logo" h="6vw" w="auto" />
+    <>
+      <motion.div
+        initial={false}
+        animate={{ 
+          height: isScrolled ? (isMobile ? 60 : 70) : (isMobile ? 110 : 140),
+          borderRadius: isScrolled ? (isMobile ? 15 : 20) : 0,
+          backdropFilter: isScrolled ? 'blur(10px)' : 'none',
+          backgroundColor: isScrolled ? 'rgba(216, 223, 205, 0.9)' : '#D8DFCD',
+          boxShadow: isScrolled ? '0 4px 30px rgba(0, 0, 0, 0.1)' : 'none',
+          border: isScrolled ? '1px solid rgba(255, 255, 255, 0.3)' : 'none',
+        }}
+        transition={{ 
+          duration: 0.4, 
+          ease: [0.25, 0.46, 0.45, 0.94],
+        }}
+        style={{
+          position: 'fixed',
+          top: isScrolled ? (isMobile ? 5 : 10) : 0,
+          left: isScrolled ? (isMobile ? 5 : 10) : 0,
+          right: isScrolled ? (isMobile ? 5 : 10) : 0,
+          zIndex: 1000,
+          width: isScrolled ? (isMobile ? 'calc(100% - 10px)' : 'calc(100% - 20px)') : '100%',
+          overflow: 'hidden',
+        }}
+      >
+        <Box as="nav" w="full" bg="transparent" h="full">
+          <Flex direction="column" h="full">
+            {/* Main Row: Logo, Search, Actions */}
+            <Flex 
+              justify="space-between" 
+              align="center" 
+              px={{ base: 3, md: 6 }} 
+              py={{ base: 2, md: 3 }}
+              flex="1"
+              maxW="container.xl" 
+              mx="auto"
+              w="full"
+            >
+              {/* Left: Mobile Menu + Logo */}
+              <Flex align="center" gap={2}>
+                {/* Mobile Menu Button */}
+                {isMobile && (
+                  <IconButton
+                    aria-label="Open menu"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsDrawerOpen(true)}
+                    color="#1b4a26"
+                    _hover={{ bg: "green.100" }}
+                  >
+                    <LuMenu />
+                  </IconButton>
+                )}
+                
+                {/* Logo */}
+                <motion.div
+                  animate={{ 
+                    scale: isScrolled ? (isMobile ? 0.7 : 0.8) : 1 
+                  }}
+                  transition={{ duration: 0.4, ease: 'easeInOut' }}
+                >
+                  <Image 
+                    src="/GHG_icons/GHG-icon.png" 
+                    alt="EduGames Logo" 
+                    h={{ 
+                      base: isScrolled ? "2rem" : "3rem", 
+                      md: isScrolled ? "2.5rem" : "4rem" 
+                    }} 
+                    w="auto" 
+                  />
+                </motion.div>
+              </Flex>
+
+              {/* Center: Search Bar */}
+              <AnimatePresence>
+                {(!isScrolled || !isMobile) && (
+                  <motion.div
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: 'auto' }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.3 }}
+                    style={{ 
+                      flex: isMobile ? 1 : 2, 
+                      paddingLeft: isMobile ? 8 : 16, 
+                      paddingRight: isMobile ? 8 : 16,
+                      position: 'relative'
+                    }}
+                  >
+                    <Input 
+                      placeholder="Search games..." 
+                      borderRadius="full"
+                      borderColor="gray.700"
+                      color="black"
+                      _hover={{ borderColor: "gray.400" }}
+                      _focus={{ borderColor: "green.500", boxShadow: "none" }}
+                      pl={4}
+                      pr={10}
+                      size={{ base: "sm", md: "md" }}
+                      bg="white"
+                    />
+                    <IconButton
+                      aria-label="Search games"
+                      position="absolute"
+                      right={isMobile ? 10 : 18}
+                      top="50%"
+                      transform="translateY(-50%) translateX(-25%)"
+                      bg="#224750"
+                      color="white"
+                      borderRadius="full"
+                      size="xs"
+                      fontSize="14px"
+                      _hover={{ bg: "#2d5a65" }}
+                    >
+                      <LuSearch />
+                    </IconButton>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* Right: Actions */}
+              <Flex align="center" gap={2} justify="flex-end">
+                {/* Mobile Search Button (when minimized) */}
+                <AnimatePresence>
+                  {isScrolled && isMobile && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <IconButton
+                        aria-label="Search games"
+                        variant="ghost"
+                        size="sm"
+                        color="#1b4a26"
+                        _hover={{ bg: "green.100" }}
+                      >
+                        <LuSearch />
+                      </IconButton>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Desktop Login/Signup Buttons */}
+                <AnimatePresence>
+                  {!isMobile && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <Flex gap={2}>
+                        <Button 
+                          variant="ghost" 
+                          size={isScrolled ? "xs" : "sm"}
+                          color="#1b4a26" 
+                          _hover={{ bg: "green.100" }}
+                        >
+                          Log In
+                        </Button>
+                        <Button 
+                          variant="ghost" 
+                          size={isScrolled ? "xs" : "sm"}
+                          color="#1b4a26" 
+                          _hover={{ bg: "green.100" }}
+                        >
+                          Sign Up
+                        </Button>
+                      </Flex>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                
+                {/* Cart Icon */}
+                <IconButton
+                  aria-label="Shopping Cart"
+                  variant="ghost"
+                  size="sm"
+                  fontSize="16px"
+                  isRound
+                  color="#1b4a26"
+                  _hover={{ bg: "green.100" }}
+                >
+                  <LuShoppingCart />
+                </IconButton>
+              </Flex>
+            </Flex>
+
+            {/* Bottom Row: Navigation Links (Desktop Only, Not Scrolled) */}
+            <AnimatePresence>
+              {!isScrolled && !isMobile && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  style={{ borderTop: '1px solid #e2e8f0' }}
+                >
+                  <Flex 
+                    justify="center" 
+                    align="center" 
+                    gap={6}
+                    py={3}
+                    px={6}
+                    maxW="container.xl" 
+                    mx="auto"
+                  >
+                    {/* Categories Dropdown */}
+                    <Menu.Root>
+                      <Menu.Trigger asChild>
+                        <Button 
+                          variant="ghost"
+                          size="sm"
+                          color="#1b4a26"
+                          _hover={{ bg: 'green.100' }}
+                          _active={{ bg: 'green.200' }}
+                          rightIcon={<LuChevronDown />}
+                        >
+                          Explore Categories
+                        </Button>
+                      </Menu.Trigger>
+                      <Menu.Positioner>
+                        <Menu.Content>
+                          {categories.map((category) => (
+                            <Menu.Item key={category}>{category}</Menu.Item>
+                          ))}
+                        </Menu.Content>
+                      </Menu.Positioner>
+                    </Menu.Root>
+
+                    {/* Navigation Links */}
+                    <Button variant="ghost" size="sm" color="#1b4a26" _hover={{ bg: "green.100" }}>
+                      List Your Game
+                    </Button>
+                    <Button variant="ghost" size="sm" color="#1b4a26" _hover={{ bg: "green.100" }}>
+                      Learn More
+                    </Button>
+                    <Button variant="ghost" size="sm" color="#1b4a26" _hover={{ bg: "green.100" }}>
+                      Help Center
+                    </Button>
+                  </Flex>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </Flex>
         </Box>
+      </motion.div>
 
-        {/* Logo and Categories Dropdown */}
-        <Flex flex="1" align="center" gap={4}>
-          {/* Categories Dropdown */}
-          <Menu.Root>
-            <Menu.Trigger asChild>
-              <Button 
-                leftIcon={<FiChevronDown />}
-                variant="ghost"
-                size="sm"
-                color="black"
-                _hover={{ bg: 'gray.200' }}
-                _active={{ bg: 'gray.300' }}
-              >
-                Categories
-              </Button>
-            </Menu.Trigger>
-            <Menu.Positioner>
-              <Menu.Content>
-                {categories.map((category) => (
-                  <Menu.Item key={category}>{category}</Menu.Item>
-                ))}
-              </Menu.Content>
-            </Menu.Positioner>
-          </Menu.Root>
-          
-          {/* Logo */}
-          <Image src="/GHG_icons/GHG-icon.png" alt="EduGames Logo" h="6vw" w="auto" />
-        </Flex>
+      {/* Spacer */}
+      <Box h={{ 
+        base: isScrolled ? '70px' : '110px', 
+        md: isScrolled ? '80px' : '140px' 
+      }} />
 
-        {/* Search */}
-        <Box flex="2" px={4} position="relative">
-          <Input 
-            placeholder="Search games..." 
-            borderRadius="full"
-            borderColor="gray.700"
-            _hover={{ borderColor: "gray.400" }}
-            _focus={{ borderColor: "green.500", boxShadow: "none" }}
-            pl={4}
-            pr={10}
-          />
+      {/* Mobile Drawer Menu */}
+      <Drawer.Root open={isDrawerOpen} onOpenChange={(e) => setIsDrawerOpen(e.open)}>
+        <Portal>
+          <Drawer.Backdrop />
+          <Drawer.Positioner>
+            <Drawer.Content>
+              <Drawer.Header>
+                <Drawer.Title>Menu</Drawer.Title>
+                <Drawer.CloseTrigger asChild>
+                  <IconButton
+                    aria-label="Close menu"
+                    variant="ghost"
+                    size="sm"
+                    position="absolute"
+                    right={2}
+                    top={2}
+                  >
+                    <LuX />
+                  </IconButton>
+                </Drawer.CloseTrigger>
+              </Drawer.Header>
+              <Drawer.Body>
+                <VStack spacing={4} align="stretch" mt={4}>
+                  {/* User Actions */}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    justifyContent="flex-start"
+                    color="#1b4a26"
+                  >
+                    Log In
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    justifyContent="flex-start"
+                    color="#1b4a26"
+                  >
+                    Sign Up
+                  </Button>
 
-          <IconButton
-            aria-label="Search games"
-            position="absolute"
-            right={6}
-            top="50%"
-            transform="translateY(-50%)"
-            bg="#224750"
-            color="white"
-            borderRadius="full"
-            size="xs"
-            fontSize="16px"
-            _hover={{ bg: "#2d5a65" }}
-            icon={<FiSearch />}
-          />
-        </Box>
+                  {/* Categories */}
+                  <Menu.Root>
+                    <Menu.Trigger asChild>
+                      <Button 
+                        variant="ghost"
+                        size="sm"
+                        justifyContent="space-between"
+                        rightIcon={<LuChevronDown />}
+                        color="#1b4a26"
+                      >
+                        Explore Categories
+                      </Button>
+                    </Menu.Trigger>
+                    <Menu.Positioner>
+                      <Menu.Content>
+                        {categories.map((category) => (
+                          <Menu.Item key={category}>{category}</Menu.Item>
+                        ))}
+                      </Menu.Content>
+                    </Menu.Positioner>
+                  </Menu.Root>
 
-        {/* Auth + Cart */}
-        <Flex flex="1" justify="flex-end" align="center" gap={2}>
-          <Button variant="ghost" size="sm" color="#1b4a26" _hover={{ bg: "gray.200" }}>
-            Log In
-          </Button>
-          <Button variant="ghost" size="sm" color="#1b4a26" _hover={{ bg: "gray.200" }}>
-            Sign Up
-          </Button>
-          <IconButton
-            aria-label="Shopping Cart"
-            variant="ghost"
-            size="md"
-            fontSize="16px"
-            isRound
-            color="#1b4a26"
-            _hover={{ bg: "green.200" }}
-            icon={<FiShoppingCart />}
-          />
-        </Flex>
-      </Flex>
-
-      {/* Bottom Section (simple links) */}
-      <Box w="full" py={1} px={6} bg="#D8DFCD">
-        <HStack spacing={4} justify="center">
-          <Button variant="ghost" size="sm" px={4} _hover={{ bg: "gray.200" }} color="black">
-            List Your Game
-          </Button>
-          <Button variant="ghost" size="sm" px={4} _hover={{ bg: "gray.200" }} color="black">
-            Learn More
-          </Button>
-          <Button variant="ghost" size="sm" px={4} _hover={{ bg: "gray.200" }} color="black">
-            Help Center
-          </Button>
-        </HStack>
-      </Box>
-    </Box>
+                  {/* Navigation Links */}
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    justifyContent="flex-start"
+                    color="#1b4a26"
+                  >
+                    List Your Game
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    justifyContent="flex-start"
+                    color="#1b4a26"
+                  >
+                    Learn More
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    justifyContent="flex-start"
+                    color="#1b4a26"
+                  >
+                    Help Center
+                  </Button>
+                </VStack>
+              </Drawer.Body>
+            </Drawer.Content>
+          </Drawer.Positioner>
+        </Portal>
+      </Drawer.Root>
+    </>
   );
 }
 
