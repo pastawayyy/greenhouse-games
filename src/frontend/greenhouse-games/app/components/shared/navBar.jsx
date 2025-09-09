@@ -139,28 +139,27 @@ function Navbar() {
                       placeholder="Search games..." 
                       borderRadius="full"
                       borderColor="gray.700"
-                      color="black"
                       _hover={{ borderColor: "gray.400" }}
                       _focus={{ borderColor: "green.500", boxShadow: "none" }}
                       pl={4}
                       pr={10}
                       size={{ base: "sm", md: "md" }}
                       bg="white"
+                      color="black"
                     />
                     <IconButton
                       aria-label="Search games"
                       position="absolute"
                       right={isMobile ? 10 : 18}
                       top="50%"
-                      transform="translateY(-50%) translateX(-25%)"
-                      bg="#224750"
+                      transform="translateY(-50%) translateX(-30%)"
                       color="white"
                       borderRadius="full"
                       size="xs"
                       fontSize="14px"
-                      _hover={{ bg: "#2d5a65" }}
+                      _hover={{ bg: "#adb7b3ff" }}
                     >
-                      <LuSearch />
+                      <LuSearch color="#1b4a26"/>
                     </IconButton>
                   </motion.div>
                 )}
@@ -250,7 +249,7 @@ function Navbar() {
                     justify="center" 
                     align="center" 
                     gap={6}
-                    py={3}
+                    py={2}
                     px={6}
                     maxW="container.xl" 
                     mx="auto"

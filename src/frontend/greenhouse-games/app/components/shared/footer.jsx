@@ -99,7 +99,7 @@ const Footer = () => {
 
             {/* Copyright */}
             <Box p={2} bg="#284A27">
-                <Text textAlign="center" fontSize="xs">© 2024 All Rights Reserved. Greenhouse Games</Text>
+                <Text textAlign="center" fontSize="xs">© 2025 All Rights Reserved. Greenhouse Games</Text>
             </Box>
         </Box>
     );
