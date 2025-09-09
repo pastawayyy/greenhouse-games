@@ -10,9 +10,6 @@ import {
   HStack,
   IconButton,
   Menu,
-  MenuButton,
-  MenuList,
-  MenuItem
 } from '@chakra-ui/react';
 import { FiSearch, FiShoppingCart, FiChevronDown } from "react-icons/fi";
 
@@ -39,24 +36,27 @@ function Navbar() {
         {/* Logo and Categories Dropdown */}
         <Flex flex="1" align="center" gap={4}>
           {/* Categories Dropdown */}
-          <Menu>
-            <MenuButton 
-              as={Button} 
-              leftIcon={<FiChevronDown />}
-              variant="ghost"
-              size="sm"
-              color="black"
-              _hover={{ bg: 'gray.200' }}
-              _active={{ bg: 'gray.300' }}
-            >
-              Categories
-            </MenuButton>
-            <MenuList>
-              {categories.map((category) => (
-                <MenuItem key={category}>{category}</MenuItem>
-              ))}
-            </MenuList>
-          </Menu>
+          <Menu.Root>
+            <Menu.Trigger asChild>
+              <Button 
+                leftIcon={<FiChevronDown />}
+                variant="ghost"
+                size="sm"
+                color="black"
+                _hover={{ bg: 'gray.200' }}
+                _active={{ bg: 'gray.300' }}
+              >
+                Categories
+              </Button>
+            </Menu.Trigger>
+            <Menu.Positioner>
+              <Menu.Content>
+                {categories.map((category) => (
+                  <Menu.Item key={category}>{category}</Menu.Item>
+                ))}
+              </Menu.Content>
+            </Menu.Positioner>
+          </Menu.Root>
           
           {/* Logo */}
           <Image src="/GHG_icons/GHG-icon.png" alt="EduGames Logo" h="6vw" w="auto" />
