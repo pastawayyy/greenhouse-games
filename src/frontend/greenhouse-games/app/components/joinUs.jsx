@@ -6,7 +6,8 @@ const JoinUs = () => {
         <Box
             w="full"
             color="white"
-            bg="#6E6554"
+            bgSize="cover"
+            bgImage="url('/CTA_bg.png')"
             minH={{ base: "auto", md: "205px" }}
         >
             {/* Top brown section */}

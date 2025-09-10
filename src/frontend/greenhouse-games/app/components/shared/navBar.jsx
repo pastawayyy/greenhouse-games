@@ -13,6 +13,7 @@ import {
   Portal,
   VStack,
   useBreakpointValue,
+  Kbd,
 } from '@chakra-ui/react';
 import { 
   LuSearch, 
@@ -235,11 +236,12 @@ function Navbar() {
                 <IconButton
                   aria-label="Shopping Cart"
                   variant="ghost"
+                  colorPalette={"green"}
                   size="sm"
                   fontSize="16px"
-                  isRound
-                  color="#1b4a26"
-                  _hover={{ bg: "green.100" }}
+                  rounded={"full"}
+                  color="#216a32ff"
+                  _hover={{ bg: "white" }}
                 >
                   <LuShoppingCart />
                 </IconButton>

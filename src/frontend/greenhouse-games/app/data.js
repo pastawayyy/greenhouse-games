@@ -68,7 +68,7 @@ export const amazingDeals = [
     {
         title: "Plastic-Free Ocean",
         organiser: "Marine Savers",
-        imageUrl: "https://picsum.photos/200/200?random=8",
+        imageUrl: "https://picsum.photos/200/200?random=10",
         organiserPic: "https://picsum.photos/100/100?random=14",
         rating: 4.4,
         reviews: 95,

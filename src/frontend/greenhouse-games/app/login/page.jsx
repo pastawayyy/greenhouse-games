@@ -1,6 +1,7 @@
 'use client'
 
 import { Box, VStack, Field, Input, Text, FieldRequiredIndicator, Checkbox, Button, HStack, Separator, List, Flex } from "@chakra-ui/react";
+import { PasswordInput } from "../components/ui/password-input"
 
 const Login = () => {
     return (
