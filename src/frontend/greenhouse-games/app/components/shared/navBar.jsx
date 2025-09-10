@@ -12,26 +12,37 @@ import {
   Drawer,
   Portal,
   VStack,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverBody,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import { LuSearch, LuShoppingCart, LuChevronDown, LuMenu, LuX, LuUser } from "react-icons/lu";
+import { 
+  LuSearch, 
+  LuShoppingCart, 
+  LuChevronDown, 
+  LuMenu, 
+  LuX, 
+  LuUser,
+  LuCalculator,
+  LuCode,
+  LuLanguages,
+  LuBrain,
+  LuFlaskConical,
+  LuPalette,
+  LuHeart
+} from "react-icons/lu";
 import { motion, AnimatePresence } from 'motion/react';
 
-function Navbar() {
-  const categories = [
-    'Math Games', 
-    'Coding Games', 
-    'Language Games', 
-    'Memorization Games', 
-    'Science Games', 
-    'Art Games', 
-    'SEL Games'
-  ];
+// Category data with icons
+const categories = [
+  { name: 'Math Games', icon: LuCalculator },
+  { name: 'Coding Games', icon: LuCode },
+  { name: 'Language Games', icon: LuLanguages },
+  { name: 'Memorization Games', icon: LuBrain },
+  { name: 'Science Games', icon: LuFlaskConical },
+  { name: 'Art Games', icon: LuPalette },
+  { name: 'SEL Games', icon: LuHeart }
+];
 
+function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -255,7 +266,7 @@ function Navbar() {
                     mx="auto"
                   >
                     {/* Categories Dropdown */}
-                    <Menu.Root>
+                    <Menu.Root placement="bottom-start">
                       <Menu.Trigger asChild>
                         <Button 
                           variant="ghost"
@@ -268,13 +279,59 @@ function Navbar() {
                           Explore Categories
                         </Button>
                       </Menu.Trigger>
-                      <Menu.Positioner>
-                        <Menu.Content>
-                          {categories.map((category) => (
-                            <Menu.Item key={category}>{category}</Menu.Item>
-                          ))}
-                        </Menu.Content>
-                      </Menu.Positioner>
+                      <Portal>
+                        <Menu.Positioner>
+                          <Menu.Content 
+                            zIndex={1001} 
+                            mt={1}
+                            minW="200px"
+                            boxShadow="0 10px 30px rgba(0, 0, 0, 0.15)"
+                            borderRadius="lg"
+                            border="1px solid"
+                            borderColor="gray.200"
+                            py={1}
+                          >
+                            {categories.map((category) => {
+                              const IconComponent = category.icon;
+                              return (
+                                <Menu.Item key={category.name}>
+                                  <motion.div
+                                    whileHover={{ 
+                                      scale: 1.02,
+                                      transition: { duration: 0.2 }
+                                    }}
+                                    style={{ position: 'relative', padding: '6px 12px' }}
+                                  >
+                                    {/* Blurry glow effect on hover */}
+                                    <motion.div
+                                      initial={{ opacity: 0 }}
+                                      whileHover={{ 
+                                        opacity: 1,
+                                        transition: { duration: 0.3 }
+                                      }}
+                                      style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        bottom: 0,
+                                        background: 'rgba(123, 220, 181, 0.15)',
+                                        borderRadius: '6px',
+                                        filter: 'blur(8px)',
+                                        zIndex: -1,
+                                      }}
+                                    />
+                                    <Flex align="center" gap={2}>
+                                      <IconComponent size={16} />
+                                      <span style={{ fontSize: '14px' }}>{category.name}</span>
+                                    </Flex>
+                                  </motion.div>
+                                </Menu.Item>
+                              );
+                            })}
+                          </Menu.Content>
+                        </Menu.Positioner>
+                      </Portal>
                     </Menu.Root>
 
                     {/* Navigation Links */}
@@ -323,7 +380,10 @@ function Navbar() {
                 </Drawer.CloseTrigger>
               </Drawer.Header>
               <Drawer.Body>
-                <VStack spacing={4} align="stretch" mt={4}>
+                <VStack 
+                  spacing={4}
+                  align="stretch"
+                  mt={4}>
                   {/* User Actions */}
                   <Button 
                     variant="ghost" 
@@ -343,7 +403,7 @@ function Navbar() {
                   </Button>
 
                   {/* Categories */}
-                  <Menu.Root>
+                  <Menu.Root placement="bottom-start">
                     <Menu.Trigger asChild>
                       <Button 
                         variant="ghost"
@@ -355,13 +415,50 @@ function Navbar() {
                         Explore Categories
                       </Button>
                     </Menu.Trigger>
-                    <Menu.Positioner>
-                      <Menu.Content>
-                        {categories.map((category) => (
-                          <Menu.Item key={category}>{category}</Menu.Item>
-                        ))}
-                      </Menu.Content>
-                    </Menu.Positioner>
+                    <Portal>
+                      <Menu.Positioner>
+                        <Menu.Content zIndex={1001} py={1}>
+                          {categories.map((category) => {
+                            const IconComponent = category.icon;
+                            return (
+                              <Menu.Item key={category.name}>
+                                <motion.div
+                                  whileHover={{ 
+                                    scale: 1.02,
+                                    transition: { duration: 0.2 }
+                                  }}
+                                  style={{ position: 'relative', padding: '6px 12px' }}
+                                >
+                                  {/* Blurry glow effect on hover */}
+                                  <motion.div
+                                    initial={{ opacity: 0 }}
+                                    whileHover={{ 
+                                      opacity: 1,
+                                      transition: { duration: 0.3 }
+                                    }}
+                                    style={{
+                                      position: 'absolute',
+                                      top: 0,
+                                      left: 0,
+                                      right: 0,
+                                      bottom: 0,
+                                      background: 'rgba(123, 220, 181, 0.15)',
+                                      borderRadius: '6px',
+                                      filter: 'blur(8px)',
+                                      zIndex: -1,
+                                    }}
+                                  />
+                                  <Flex align="center" gap={2}>
+                                    <IconComponent size={16} />
+                                    <span style={{ fontSize: '14px' }}>{category.name}</span>
+                                  </Flex>
+                                </motion.div>
+                              </Menu.Item>
+                            );
+                          })}
+                        </Menu.Content>
+                      </Menu.Positioner>
+                    </Portal>
                   </Menu.Root>
 
                   {/* Navigation Links */}
