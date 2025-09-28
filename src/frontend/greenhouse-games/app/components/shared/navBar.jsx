@@ -5,6 +5,7 @@ import {
   Image,
   Box,
   Flex,
+  Link,
   Input,
   Button,
   IconButton,
@@ -13,7 +14,6 @@ import {
   Portal,
   VStack,
   useBreakpointValue,
-  Kbd,
 } from '@chakra-ui/react';
 import { 
   LuSearch, 
@@ -21,7 +21,6 @@ import {
   LuChevronDown, 
   LuMenu, 
   LuX, 
-  LuUser,
   LuCalculator,
   LuCode,
   LuLanguages,
@@ -120,7 +119,8 @@ function Navbar() {
                   }}
                   transition={{ duration: 0.4, ease: 'easeInOut' }}
                 >
-                  <Image 
+                  <Link href='/'marginTop={"-4px"}>
+                    <Image 
                     src="/GHG_icons/GHG-icon.png" 
                     alt="EduGames Logo" 
                     h={{ 
@@ -128,7 +128,8 @@ function Navbar() {
                       md: isScrolled ? "2.5rem" : "4rem" 
                     }} 
                     w="auto" 
-                  />
+                    />
+                  </Link>
                 </motion.div>
               </Flex>
 
@@ -211,13 +212,14 @@ function Navbar() {
                       transition={{ duration: 0.3 }}
                     >
                       <Flex gap={2}>
-                        <Button 
+                        <Button asChild
                           variant="ghost" 
+                          href="/login"
                           size={isScrolled ? "xs" : "sm"}
                           color="#1b4a26" 
                           _hover={{ bg: "green.100" }}
                         >
-                          Log In
+                          <a href="/login">Log In</a>
                         </Button>
                         <Button 
                           variant="ghost" 
@@ -225,7 +227,7 @@ function Navbar() {
                           color="#1b4a26" 
                           _hover={{ bg: "green.100" }}
                         >
-                          Sign Up
+                          <a href="/signup">Sign Up</a>
                         </Button>
                       </Flex>
                     </motion.div>
@@ -271,11 +273,11 @@ function Navbar() {
                     <Menu.Root placement="bottom-start">
                       <Menu.Trigger asChild>
                         <Button 
-                          variant="ghost"
+                          variant="plain"
                           size="sm"
                           color="#1b4a26"
                           _hover={{ bg: 'green.100' }}
-                          _active={{ bg: 'green.200' }}
+                          _active={{ bg: 'green.100'}}
                           rightIcon={<LuChevronDown />}
                         >
                           Explore Categories
@@ -287,7 +289,7 @@ function Navbar() {
                             zIndex={1001} 
                             mt={1}
                             minW="200px"
-                            boxShadow="0 10px 30px rgba(0, 0, 0, 0.15)"
+                            boxShadow="0 10px 30px rgba(61, 61, 61, 1)"
                             borderRadius="lg"
                             border="1px solid"
                             borderColor="gray.200"
@@ -393,7 +395,7 @@ function Navbar() {
                     justifyContent="flex-start"
                     color="#1b4a26"
                   >
-                    Log In
+                    <Link to='/login'>Log In</Link>
                   </Button>
                   <Button 
                     variant="ghost" 
@@ -401,14 +403,14 @@ function Navbar() {
                     justifyContent="flex-start"
                     color="#1b4a26"
                   >
-                    Sign Up
+                    <Link to='/signup'>Sign Up</Link>
                   </Button>
 
                   {/* Categories */}
                   <Menu.Root placement="bottom-start">
                     <Menu.Trigger asChild>
                       <Button 
-                        variant="ghost"
+                        variant="plain"
                         size="sm"
                         justifyContent="space-between"
                         rightIcon={<LuChevronDown />}

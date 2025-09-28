@@ -17,9 +17,25 @@ import { PasswordInput } from "../components/ui/password-input"
 
 const SignUp = () => {
     return (
-        <Box bg="#F9FCEA">
-            <VStack align gap="2" p={8} w="65%">
-                <Text color="black" fontWeight="semibold" fontSize="xl">
+        <Box 
+            bg="#F9FCEA"
+            minH="100vh"
+            py={{ base: 4, md: 8 }}
+            px={{ base: 4, md: 6 }}
+        >
+            <VStack 
+                align 
+                gap="2" 
+                p={{ base: 4, md: 8 }} 
+                w={{ base: "100%", sm: "90%", md: "80%", lg: "65%" }}
+                maxW="4xl"
+                mx="auto"
+            >
+                <Text 
+                    color="black" 
+                    fontWeight="semibold" 
+                    fontSize={{ base: "lg", md: "xl" }}
+                >
                     Sign Up
                 </Text>
                 {/* <Tooltip 
@@ -30,9 +46,13 @@ const SignUp = () => {
                     </Button>
                     
                 </Tooltip> */}
-                <Box color="gray" fontSize="sm">
+                <Box 
+                    color="gray" 
+                    fontSize={{ base: "xs", sm: "sm" }}
+                    w="full"
+                >
                     <Text>Create a Greenhouse Games account to unlock additional benefits: </Text>
-                    <List.Root ml={4}>
+                    <List.Root ml={{ base: 2, md: 4 }}>
                         <List.Item >
                             Access and manage your purchased games directly from our platform.
                         </List.Item>
@@ -46,48 +66,75 @@ const SignUp = () => {
                     <Text>
                         Prefer not to sign up? You can still purchase games without an account!
                     </Text>
-                    <Text mt={4}>If you're a developer looking to list your games, please visit <Link variant="underline" colorPalette="blue" href="#">Developer Registration</Link></Text>
+                    <Text mt={4}>
+                        If you're a developer looking to list your games, please visit{' '}
+                        <Link variant="underline" colorPalette="blue" href="#">
+                            Developer Registration
+                        </Link>
+                    </Text>
                     <VStack align="center" mt={8}>
                         {/* need to add google auth but we dont hv the proper page yet but alr made the API key */}
                         <Text> - or -</Text>
                     </VStack>
                 </Box>
-                <Box color="black" fontSize="sm">
+                <Box 
+                    color="black" 
+                    fontSize={{ base: "xs", sm: "sm" }}
+                    w="full"
+                >
                     <Field.Root required>
                         <Field.Label fontWeight="semibold" mt={2}>
                             First Name <Field.RequiredIndicator />
                         </Field.Label>
-                        <Input borderWidth="2px" size="sm" />
+                        <Input 
+                            borderWidth="2px" 
+                            size={{ base: "sm", md: "sm" }}
+                        />
                     </Field.Root>
                     <Field.Root required>
                         <Field.Label fontWeight="semibold" mt={4}>
                             Last Name <Field.RequiredIndicator />
                         </Field.Label>
-                        <Input borderWidth="2px" size="sm" />
+                        <Input 
+                            borderWidth="2px" 
+                            size={{ base: "sm", md: "sm" }}
+                        />
                     </Field.Root>
                     <Field.Root required>
                         <Field.Label fontWeight="semibold" mt={4}>
                             Email Address <Field.RequiredIndicator />
                         </Field.Label>
-                        <Input borderWidth="2px" size="sm" />
+                        <Input 
+                            borderWidth="2px" 
+                            size={{ base: "sm", md: "sm" }}
+                        />
                     </Field.Root>
                     <Field.Root required>
                         <Field.Label fontWeight="semibold" mt={4}>
                             Password <Field.RequiredIndicator />
                         </Field.Label>
-                        <PasswordInput borderWidth="2px" size="sm" />
+                        <PasswordInput 
+                            borderWidth="2px" 
+                            size={{ base: "sm", md: "sm" }}
+                        />
                     </Field.Root>
                     <Field.Root required>
                         <Field.Label fontWeight="semibold" mt={4}>
                             Confirm Password <Field.RequiredIndicator />
                         </Field.Label>
-                        <PasswordInput borderWidth="2px" size="sm" />
+                        <PasswordInput 
+                            borderWidth="2px" 
+                            size={{ base: "sm", md: "sm" }}
+                        />
                     </Field.Root>
                     <Field.Root required>
                         <Field.Label fontWeight="semibold" mt={4}>
                             Date of Birth (DD/MM/YYYY) <Field.RequiredIndicator />
                         </Field.Label>
-                        <Input borderWidth="2px" size="sm" />
+                        <Input 
+                            borderWidth="2px" 
+                            size={{ base: "sm", md: "sm" }}
+                        />
                     </Field.Root>
                     <Field.Root required></Field.Root>
 
@@ -97,21 +144,43 @@ const SignUp = () => {
                 <Checkbox.Root mt={4}>
                     <Checkbox.HiddenInput />
                     <Checkbox.Control />
-                    <Checkbox.Label fontWeight="normal" fontSize="sm" color="gray.700" >
+                    <Checkbox.Label 
+                        fontWeight="normal" 
+                        fontSize={{ base: "xs", sm: "sm" }} 
+                        color="gray.700"
+                    >
                         I'd like to receive updates, exclusive offers and news from Greenhouse Games via email
                     </Checkbox.Label>
                 </Checkbox.Root>
                 <Checkbox.Root>
                     <Checkbox.HiddenInput />
                     <Checkbox.Control />
-                    <Checkbox.Label fontWeight="normal" fontSize="sm" color="gray.700" >
-                        By signing up, I agree to the <Link colorPalette="blue" href="#"> Terms and Conditions </Link> and <Link colorPalette="blue" href="#">Privacy Policy</Link>
+                    <Checkbox.Label 
+                        fontWeight="normal" 
+                        fontSize={{ base: "xs", sm: "sm" }} 
+                        color="gray.700"
+                    >
+                        By signing up, I agree to the{' '}
+                        <Link colorPalette="blue" href="#">
+                            Terms and Conditions
+                        </Link>{' '}
+                        and{' '}
+                        <Link colorPalette="blue" href="#">
+                            Privacy Policy
+                        </Link>
                     </Checkbox.Label>
                 </Checkbox.Root>
-                <Button mt={4} rounded="full" size="sm" colorPalette="teal" w="30%">Sign Up</Button>
+                <Button 
+                    mt={4} 
+                    rounded="full" 
+                    size={{ base: "sm", md: "sm" }} 
+                    colorPalette="teal" 
+                    w={{ base: "50%", sm: "40%", md: "30%" }}
+                >
+                    Sign Up
+                </Button>
             </VStack>
         </Box>
-
     );
 };
 
