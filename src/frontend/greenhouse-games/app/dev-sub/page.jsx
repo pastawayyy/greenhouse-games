@@ -63,7 +63,7 @@ const DevSub = () => {
                         fontWeight="semibold"
                         mt={{ base: 2, md: 4 }}
                     >
-                        Process of Listing Your Games on Greenhouse Games
+                        What to Know Before Listing Your Game on Greenhouse Games
                     </Text>
                     <List.Root as="ol"
                         ml={{ base: 2, md: 4 }}
@@ -77,17 +77,10 @@ const DevSub = () => {
                                 <Text as="span" fontWeight="semibold">
                                 Submit & List Your Games for FREE
                                 </Text>
-                                 : Listing your games on Greenhouse Games in completely free! Simply ensure your submission meets our requirements, and we'll take care of hosting it on our platform for educators and parents to discover
+                                 : Listing your games on Greenhouse Games is completely free! Simply ensure your submission meets our requirements, and we'll take care of hosting it on our platform for educators and parents to discover
                             </Text>
                         </List.Item>
-                        <List.Item>
-                            <Text>
-                                <Text as="span" fontWeight="semibold">
-                                    Follow Guidelines for Submission
-                                </Text>
-                                    : To maintain the quality of our marketplace
-                            </Text> 
-                        </List.Item>
+
                         <List.Item>
                             <Text>
                                 <Text as="span" fontWeight="semibold">
@@ -100,6 +93,7 @@ const DevSub = () => {
                                 . This ensures educators trust the content listed on our platform
                             </Text> 
                         </List.Item>
+
                         <List.Item>
                             <Text>
                                 <Text as="span" fontWeight="semibold">
@@ -108,18 +102,20 @@ const DevSub = () => {
                                 : Once approved, your game will be hosted on our platform, making it accessible to a wide audience of educators, parents and students 
                             </Text>
                         </List.Item>
+
                         <List.Item>
                             <Text>
                                 <Text as="span" fontWeight="semibold">
                                     Earn Revenues Through Sales
                                 </Text>
-                                : When educators purchase your game, you'll receieve payment after we deduct&nbsp;
+                                : When your game is purchased, you'll receive payment after we deduct&nbsp;
                                 <Text as="span" textDecoration="underline" textDecorationColor="red" color="red">
                                     X%   
                                 </Text>  
-                                sales commission through our revenue-saving model. Payments will be credited to the account details you provide durign submission  
+                                &nbsp;sales commission through our revenue-saving model. Payments will be credited to the account details you provide during submission  
                             </Text>
                         </List.Item>
+
                     </List.Root>
                     <Text
                         color="gray"
